@@ -3,6 +3,7 @@ import { cn } from '@/lib/utils';
 import { Search, BarChart3, Menu, X, FileText, BookOpen, Flag, IndianRupee, Globe, Github } from 'lucide-react';
 import { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
+import { ThemeToggle } from '@/components/theme-toggle';
 
 export function Navbar() {
   const [location] = useLocation();
@@ -107,6 +108,9 @@ export function Navbar() {
           >
             <Github className="w-4 h-4" />
           </a>
+
+          {/* Dark mode toggle */}
+          <ThemeToggle />
 
           {/* Language dropdown */}
           <div className="relative">

@@ -29,25 +29,44 @@ A civic accountability platform that cross-references official government announ
 
 ## Quick start
 
+### Option A — Docker (recommended)
+
+The repo ships a [`compose.yml`](./compose.yml) that runs a local PostgreSQL 16. You only need Docker installed (e.g. [Docker Desktop](https://www.docker.com/products/docker-desktop/) or [Colima](https://github.com/abiosoft/colima)).
+
 ```bash
-# Requires pnpm — https://pnpm.io
+# 1. Start the database
+docker compose up -d
+
+# 2. Install dependencies (requires pnpm — https://pnpm.io)
 pnpm install
 
-# Copy env vars and fill in your values
+# 3. Copy env vars and fill in your values
 cp .env.example .env
 
-# Create tables
+# 4. Create tables
 pnpm --filter @workspace/db run push
 
-# Load seed data (schemes, CAG audits, PIB entries — ~800 rows)
+# 5. Load seed data (schemes, CAG audits, PIB entries — ~800 rows)
 psql "$DATABASE_URL" -f lib/db/seed.sql
 
-# Start the API server (port from $PORT env var)
+# 6. Start the API server (terminal 1)
 pnpm --filter @workspace/api-server run dev
 
-# Start the frontend (separate terminal)
-pnpm --filter @workspace/govlens run dev
+# 7. Start the frontend (terminal 2, on port 3000)
+PORT=3000 pnpm --filter @workspace/govlens run dev
 ```
+
+The frontend dev server proxies `/api/*` to the API server on `localhost:8080`, so open `http://localhost:3000`. The `.env.example` values match the compose file (`user`/`password`/`govlens` on port 5432), so you can use it as-is for local development.
+
+### Option B — Own PostgreSQL
+
+If you already have PostgreSQL running, skip step 1 and point `DATABASE_URL` at your instance.
+
+### Notes
+
+- **API server port** — defaults to `PORT` from `.env` (`8080`). The frontend proxy assumes the API is on `8080`.
+- **Frontend port** — Vite reads `PORT` too, so pass `PORT=3000` explicitly (or unset it) to avoid a port clash with the API server.
+- **OpenAI integration is optional** — the server starts without `AI_INTEGRATIONS_OPENAI_*` keys; only the AI-powered refresh endpoints need them.
 
 ## Environment variables
 

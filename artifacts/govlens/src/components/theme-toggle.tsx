@@ -22,8 +22,8 @@ export function ThemeToggle() {
       title="Toggle dark mode"
       onClick={() => setTheme(isDark ? 'light' : 'dark')}
       className={cn(
-        'relative flex items-center w-11 h-6 rounded-full border transition-colors flex-shrink-0',
-        isDark ? 'bg-primary/15 border-primary/40' : 'bg-muted border-border',
+        'relative flex items-center w-11 h-6 rounded-full border transition-colors shrink-0',
+        isDark ? 'bg-foreground/10 border-foreground/25' : 'bg-muted border-border',
       )}
     >
       <Sun

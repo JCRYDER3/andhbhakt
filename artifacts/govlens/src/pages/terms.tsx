@@ -1,4 +1,3 @@
-import { Navbar } from '@/components/navbar';
 import { SEO } from '@/components/seo';
 import { Link } from 'wouter';
 import { ArrowLeft, Scale } from 'lucide-react';
@@ -9,7 +8,6 @@ export default function TermsOfUse() {
   return (
     <div className="min-h-screen bg-background">
       <SEO title={t('termsSeoTitle')} description={t('termsSeoDesc')} path="/terms" />
-      <Navbar />
 
       <div className="max-w-2xl mx-auto px-4 sm:px-6 py-10">
         <Link

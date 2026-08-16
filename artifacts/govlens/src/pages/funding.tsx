@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Navbar } from '@/components/navbar';
 import { SEO } from '@/components/seo';
 import {
   BONDS_META, PARTY_FUNDING, TOP_DONORS, PARTY_COLOR, PARTY_INCOME_HISTORY,
@@ -252,9 +251,8 @@ export default function Funding() {
         path="/funding"
         ogImage="/og/default.jpg"
       />
-      <Navbar />
 
-      <main className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
 
         {/* ── hero header ── */}
         <div>
@@ -786,7 +784,7 @@ export default function Funding() {
           </p>
         </div>
 
-      </main>
+      </div>
     </div>
   );
 }

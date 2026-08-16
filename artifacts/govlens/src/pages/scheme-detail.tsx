@@ -8,7 +8,6 @@ import ministriesHiRaw from '../data/ministries-hi.json';
 const pibUnitsHi = pibUnitsHiRaw as Record<string, string>;
 const ministriesHi = ministriesHiRaw as Record<string, string>;
 import { useGetScheme, useGetSchemeVerdict, useListPibEntries, useListCagAudits, getGetSchemeQueryKey, getGetSchemeVerdictQueryKey, getListPibEntriesQueryKey, getListCagAuditsQueryKey } from '@workspace/api-client-react';
-import { Navbar } from '@/components/navbar';
 import { SeverityBadge } from '@/components/severity-badge';
 import { VerdictBadge } from '@/components/verdict-badge';
 import { Progress } from '@/components/ui/progress';
@@ -51,7 +50,6 @@ export default function SchemeDetail() {
   if (schemeLoading) {
     return (
       <div className="min-h-[100dvh] bg-background">
-        <Navbar />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="animate-pulse">
             <div className="h-8 bg-muted rounded w-1/3 mb-4"></div>
@@ -66,7 +64,6 @@ export default function SchemeDetail() {
   if (error || !scheme) {
     return (
       <div className="min-h-[100dvh] bg-background">
-        <Navbar />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="text-center py-16">
             <h1 className="text-2xl font-bold text-foreground mb-2">{t('schemeNotFound')}</h1>
@@ -94,7 +91,6 @@ export default function SchemeDetail() {
         type="article"
         jsonLd={schemeJsonLd(scheme.name, slug, scheme.description ?? undefined)}
       />
-      <Navbar />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Breadcrumb */}

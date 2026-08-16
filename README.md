@@ -45,9 +45,19 @@ psql "$DATABASE_URL" -f lib/db/seed.sql
 # Start the API server (port from $PORT env var)
 pnpm --filter @workspace/api-server run dev
 
-# Start the frontend (separate terminal)
+# Start the frontend (separate terminal) — http://localhost:3100
 pnpm --filter @workspace/govlens run dev
 ```
+
+The frontend defaults to **port 3100**. Override with `PORT` if needed:
+
+```bash
+PORT=3100 pnpm --filter @workspace/govlens run dev
+```
+
+UI-only work does not need PostgreSQL. Scheme and CAG chips that call `/api` stay empty until the API is running.
+
+See [DEVELOPMENT.md](DEVELOPMENT.md) for design tokens, layout components, and accessibility notes.
 
 ## Environment variables
 

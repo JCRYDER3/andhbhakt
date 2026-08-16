@@ -18,76 +18,68 @@ export function Footer() {
   }
 
   return (
-    <footer className="border-t border-border bg-card/30 mt-16">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-
-          {/* Brand */}
+    <footer className="mt-16 border-t border-border bg-card/30">
+      <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+        <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
-            <Scale className="w-4 h-4 flex-shrink-0" />
+            <Scale className="h-4 w-4 flex-shrink-0" aria-hidden="true" />
             <span>
               © {year} Andhbhakt.org — {t('footerTagline')}
             </span>
           </div>
 
-          {/* Legal links */}
-          <nav className="flex items-center gap-5 text-xs text-muted-foreground">
+          <nav aria-label={t('footerLegalNav')} className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-sm text-muted-foreground">
             <Link
               href="/terms"
-              className="hover:text-foreground transition-colors underline-offset-2 hover:underline"
+              className="underline-offset-2 hover:text-foreground hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
             >
               {t('footerTerms')}
             </Link>
-            <span className="opacity-30">·</span>
             <Link
               href="/disclaimer"
-              className="hover:text-foreground transition-colors underline-offset-2 hover:underline"
+              className="underline-offset-2 hover:text-foreground hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
             >
               {t('footerDisclaimer')}
             </Link>
-            <span className="opacity-30">·</span>
             <Link
               href="/about"
-              className="hover:text-foreground transition-colors underline-offset-2 hover:underline"
+              className="underline-offset-2 hover:text-foreground hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
             >
               {t('footerAbout')}
             </Link>
-            <span className="opacity-30">·</span>
             <Link
               href="/report-issue"
-              className="hover:text-foreground transition-colors underline-offset-2 hover:underline"
+              className="underline-offset-2 hover:text-foreground hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
             >
               {t('footerReportIssue', 'Report an Issue')}
             </Link>
           </nav>
         </div>
 
-        {/* Open source strip */}
-        <div className="mt-5 flex flex-col sm:flex-row items-center gap-3">
+        <div className="mt-5 flex flex-col items-center gap-3 sm:flex-row">
           <a
             href="https://github.com/JCRYDER3/andhbhakt"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors"
+            className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
           >
-            <Github className="w-3.5 h-3.5" />
+            <Github className="h-3.5 w-3.5" aria-hidden="true" />
             <span>Open source on GitHub</span>
           </a>
-          <span className="hidden sm:block opacity-30 text-xs">·</span>
           <button
+            type="button"
             onClick={handleCopy}
-            className="flex items-center gap-1.5 font-mono text-[11px] text-muted-foreground/70 hover:text-foreground bg-muted/50 hover:bg-muted px-2.5 py-1 rounded transition-colors"
-            title="Copy clone command"
+            className="flex items-center gap-1.5 rounded bg-muted px-2.5 py-1.5 font-mono text-xs text-muted-foreground hover:bg-muted/80 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            aria-label={copied ? t('cloneCopied') : t('copyCloneCommand')}
           >
             <span>{CLONE_CMD}</span>
             {copied
-              ? <Check className="w-3 h-3 text-green-500 flex-shrink-0" />
-              : <Copy className="w-3 h-3 flex-shrink-0" />
-            }
+              ? <Check className="h-3 w-3 flex-shrink-0 text-green-700 dark:text-green-400" aria-hidden="true" />
+              : <Copy className="h-3 w-3 flex-shrink-0" aria-hidden="true" />}
           </button>
         </div>
 
-        <p className="mt-4 text-[11px] text-muted-foreground/50 text-center sm:text-left leading-relaxed max-w-2xl">
+        <p className="mt-4 max-w-2xl text-center text-xs leading-relaxed text-muted-foreground sm:text-left">
           {t('footerAttribution')}
         </p>
       </div>

@@ -57,6 +57,9 @@ wget-log
 # Uploaded / generated assets (workspace-specific)
 attached_assets/
 
+# Local working notes — never push
+docs/
+
 # Agent memory (Replit-internal, not useful to forks)
 .agents/
 

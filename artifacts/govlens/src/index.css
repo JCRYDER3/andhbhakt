@@ -2,6 +2,7 @@
 
 @import 'tailwindcss';
 @import 'tw-animate-css';
+@import './styles/tokens.css';
 @plugin "@tailwindcss/typography";
 
 @custom-variant dark (&:is(.dark *));
@@ -68,217 +69,60 @@
   --radius-xl: calc(var(--radius) + 4px);
 }
 
-/* LIGHT MODE */
-:root {
-  --button-outline: rgba(0, 0, 0, 0.1);
-  --badge-outline: rgba(0, 0, 0, 0.05);
-
-  --opaque-button-border-intensity: -8;
-
-  --elevate-1: rgba(0, 0, 0, 0.03);
-  --elevate-2: rgba(0, 0, 0, 0.08);
-
-  /* Deep navy base — institutional authority */
-  --background: 210 20% 98%;
-  --foreground: 215 25% 12%;
-
-  --border: 215 15% 88%;
-
-  --card: 0 0% 100%;
-  --card-foreground: 215 25% 12%;
-  --card-border: 215 12% 90%;
-
-  --sidebar: 215 30% 16%;
-  --sidebar-foreground: 210 15% 92%;
-  --sidebar-border: 215 25% 22%;
-  --sidebar-primary: 25 95% 53%;
-  --sidebar-primary-foreground: 0 0% 100%;
-  --sidebar-accent: 215 25% 24%;
-  --sidebar-accent-foreground: 210 15% 95%;
-  --sidebar-ring: 25 95% 53%;
-
-  --popover: 0 0% 100%;
-  --popover-foreground: 215 25% 12%;
-  --popover-border: 215 12% 88%;
-
-  /* Saffron accent — civic energy */
-  --primary: 25 95% 53%;
-  --primary-foreground: 0 0% 100%;
-
-  --secondary: 215 20% 92%;
-  --secondary-foreground: 215 25% 16%;
-
-  --muted: 215 15% 94%;
-  --muted-foreground: 215 12% 45%;
-
-  --accent: 215 85% 60%;
-  --accent-foreground: 0 0% 100%;
-
-  --destructive: 0 84% 60%;
-  --destructive-foreground: 0 0% 100%;
-
-  --input: 215 15% 85%;
-  --ring: 25 95% 53%;
-
-  /* Severity colors */
-  --chart-1: 0 84% 60%; /* critical - red */
-  --chart-2: 38 92% 50%; /* major - amber */
-  --chart-3: 48 96% 53%; /* minor - yellow */
-  --chart-4: 142 71% 45%; /* on track - green */
-  --chart-5: 215 15% 70%; /* unaudited - gray */
-
-  --app-font-sans: 'Space Grotesk', system-ui, sans-serif;
-  --app-font-serif: Georgia, serif;
-  --app-font-mono: 'IBM Plex Mono', 'Courier New', monospace;
-  --radius: 0.375rem;
-
-  --shadow-2xs: 0px 1px 2px 0px rgba(0, 0, 0, 0.05);
-  --shadow-xs: 0px 1px 3px 0px rgba(0, 0, 0, 0.1);
-  --shadow-sm:
-    0px 1px 2px 0px rgba(0, 0, 0, 0.06),
-    0px 1px 3px 0px rgba(0, 0, 0, 0.1);
-  --shadow:
-    0px 2px 4px -1px rgba(0, 0, 0, 0.06),
-    0px 4px 6px -1px rgba(0, 0, 0, 0.1);
-  --shadow-md:
-    0px 4px 6px -2px rgba(0, 0, 0, 0.05),
-    0px 10px 15px -3px rgba(0, 0, 0, 0.1);
-  --shadow-lg:
-    0px 10px 15px -3px rgba(0, 0, 0, 0.1),
-    0px 20px 25px -5px rgba(0, 0, 0, 0.1);
-  --shadow-xl:
-    0px 20px 25px -5px rgba(0, 0, 0, 0.1),
-    0px 25px 50px -12px rgba(0, 0, 0, 0.25);
-  --shadow-2xl: 0px 25px 50px -12px rgba(0, 0, 0, 0.25);
-
-  --tracking-normal: -0.01em;
-  --spacing: 0.25rem;
-
-  --sidebar-primary-border: hsl(var(--sidebar-primary));
-  --sidebar-primary-border: hsl(
-    from hsl(var(--sidebar-primary)) h s
-      calc(l + var(--opaque-button-border-intensity)) / alpha
-  );
-
-  --sidebar-accent-border: hsl(var(--sidebar-accent));
-  --sidebar-accent-border: hsl(
-    from hsl(var(--sidebar-accent)) h s
-      calc(l + var(--opaque-button-border-intensity)) / alpha
-  );
-
-  --primary-border: hsl(var(--primary));
-  --primary-border: hsl(
-    from hsl(var(--primary)) h s
-      calc(l + var(--opaque-button-border-intensity)) / alpha
-  );
-
-  --secondary-border: hsl(var(--secondary));
-  --secondary-border: hsl(
-    from hsl(var(--secondary)) h s
-      calc(l + var(--opaque-button-border-intensity)) / alpha
-  );
-
-  --muted-border: hsl(var(--muted));
-  --muted-border: hsl(
-    from hsl(var(--muted)) h s calc(l + var(--opaque-button-border-intensity)) /
-      alpha
-  );
-
-  --accent-border: hsl(var(--accent));
-  --accent-border: hsl(
-    from hsl(var(--accent)) h s
-      calc(l + var(--opaque-button-border-intensity)) / alpha
-  );
-
-  --destructive-border: hsl(var(--destructive));
-  --destructive-border: hsl(
-    from hsl(var(--destructive)) h s
-      calc(l + var(--opaque-button-border-intensity)) / alpha
-  );
-}
-
-.dark {
-  --button-outline: rgba(255, 255, 255, 0.1);
-  --badge-outline: rgba(255, 255, 255, 0.05);
-
-  --opaque-button-border-intensity: 9;
-
-  --elevate-1: rgba(255, 255, 255, 0.04);
-  --elevate-2: rgba(255, 255, 255, 0.09);
-
-  --background: 215 25% 8%;
-  --foreground: 210 15% 95%;
-
-  --border: 215 20% 18%;
-
-  --card: 215 25% 10%;
-  --card-foreground: 210 15% 95%;
-  --card-border: 215 20% 16%;
-
-  --sidebar: 215 30% 6%;
-  --sidebar-foreground: 210 15% 90%;
-  --sidebar-border: 215 25% 12%;
-  --sidebar-primary: 25 95% 53%;
-  --sidebar-primary-foreground: 0 0% 100%;
-  --sidebar-accent: 215 25% 14%;
-  --sidebar-accent-foreground: 210 15% 95%;
-  --sidebar-ring: 25 95% 53%;
-
-  --popover: 215 25% 10%;
-  --popover-foreground: 210 15% 95%;
-  --popover-border: 215 20% 18%;
-
-  --primary: 25 95% 53%;
-  --primary-foreground: 0 0% 100%;
-
-  --secondary: 215 20% 18%;
-  --secondary-foreground: 210 15% 95%;
-
-  --muted: 215 20% 16%;
-  --muted-foreground: 215 12% 60%;
-
-  --accent: 215 85% 65%;
-  --accent-foreground: 215 25% 10%;
-
-  --destructive: 0 84% 60%;
-  --destructive-foreground: 0 0% 100%;
-
-  --input: 215 20% 22%;
-  --ring: 25 95% 53%;
-
-  --chart-1: 0 84% 60%;
-  --chart-2: 38 92% 50%;
-  --chart-3: 48 96% 53%;
-  --chart-4: 142 71% 45%;
-  --chart-5: 215 15% 40%;
-
-  --shadow-2xs: 0px 1px 2px 0px rgba(0, 0, 0, 0.3);
-  --shadow-xs: 0px 1px 3px 0px rgba(0, 0, 0, 0.4);
-  --shadow-sm:
-    0px 1px 2px 0px rgba(0, 0, 0, 0.3),
-    0px 1px 3px 0px rgba(0, 0, 0, 0.4);
-  --shadow:
-    0px 2px 4px -1px rgba(0, 0, 0, 0.3),
-    0px 4px 6px -1px rgba(0, 0, 0, 0.4);
-  --shadow-md:
-    0px 4px 6px -2px rgba(0, 0, 0, 0.3),
-    0px 10px 15px -3px rgba(0, 0, 0, 0.4);
-  --shadow-lg:
-    0px 10px 15px -3px rgba(0, 0, 0, 0.4),
-    0px 20px 25px -5px rgba(0, 0, 0, 0.5);
-  --shadow-xl:
-    0px 20px 25px -5px rgba(0, 0, 0, 0.4),
-    0px 25px 50px -12px rgba(0, 0, 0, 0.6);
-  --shadow-2xl: 0px 25px 50px -12px rgba(0, 0, 0, 0.6);
-}
-
 @layer base {
   * {
     @apply border-border;
   }
 
+  html {
+    text-size-adjust: 100%;
+  }
+
   body {
     @apply font-sans antialiased bg-background text-foreground;
+    font-size: var(--text-base);
+    line-height: var(--leading-body);
+    letter-spacing: var(--tracking-normal);
+  }
+
+  :focus-visible {
+    outline: 2px solid hsl(var(--ring));
+    outline-offset: 2px;
+  }
+
+  :focus:not(:focus-visible) {
+    outline: none;
+  }
+}
+
+/* Skip link — visually hidden until keyboard focus */
+.skip-link {
+  position: absolute;
+  left: var(--space-4);
+  top: var(--space-4);
+  z-index: 100;
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius);
+  background: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+  font-size: var(--text-sm);
+  font-weight: 600;
+  transform: translateY(-200%);
+  transition: transform 150ms ease;
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }
 

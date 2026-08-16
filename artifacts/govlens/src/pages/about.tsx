@@ -1,4 +1,3 @@
-import { Navbar } from '@/components/navbar';
 import { FileText, AlertTriangle, Scale, Target } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { SEO } from '@/components/seo';
@@ -13,7 +12,6 @@ export default function About() {
         path="/about"
         ogImage="/og/default.jpg"
       />
-      <Navbar />
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <h1 className="text-4xl font-bold text-foreground mb-6">{t('aboutTitle')}</h1>

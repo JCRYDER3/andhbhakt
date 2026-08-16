@@ -3,7 +3,6 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslation } from 'react-i18next';
-import { Navbar } from '@/components/navbar';
 import { SEO } from '@/components/seo';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -115,7 +114,6 @@ export default function ReportIssue() {
         description={t('reportIssueSeoDesc')}
         path="/report-issue"
       />
-      <Navbar />
 
       <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
 

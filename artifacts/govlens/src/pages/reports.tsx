@@ -1,5 +1,4 @@
 import { useTranslation } from 'react-i18next';
-import { Navbar } from '@/components/navbar';
 import { useState, useMemo, useEffect } from 'react';
 import { SEO } from '@/components/seo';
 import {
@@ -481,7 +480,6 @@ export default function Reports() {
         path="/reports"
         ogImage="/og/reports.jpg"
       />
-      <Navbar />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Page header */}

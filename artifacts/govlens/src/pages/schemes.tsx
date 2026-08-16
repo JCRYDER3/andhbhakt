@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { SEO } from '@/components/seo';
 import { useListSchemes, useListCategories, useListMinistries, getListSchemesQueryKey } from '@workspace/api-client-react';
-import { Navbar } from '@/components/navbar';
 import { SchemeCard } from '@/components/scheme-card';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -19,12 +18,15 @@ export default function Schemes() {
   const [ministry, setMinistry] = useState<string | undefined>();
   const [severity, setSeverity] = useState<string | undefined>();
 
-  const { data: schemes, isLoading } = useListSchemes(
+  const { data: schemesData, isLoading } = useListSchemes(
     { search, categoryId, ministry, severity },
     { query: { queryKey: getListSchemesQueryKey({ search, categoryId, ministry, severity }) } }
   );
-  const { data: categories } = useListCategories();
-  const { data: ministries } = useListMinistries();
+  const { data: categoriesData } = useListCategories();
+  const { data: ministriesData } = useListMinistries();
+  const schemes = Array.isArray(schemesData) ? schemesData : [];
+  const categories = Array.isArray(categoriesData) ? categoriesData : [];
+  const ministries = Array.isArray(ministriesData) ? ministriesData : [];
 
   return (
     <div className="min-h-[100dvh] bg-background">
@@ -34,7 +36,6 @@ export default function Schemes() {
         path="/schemes"
         ogImage="/og/schemes.jpg"
       />
-      <Navbar />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="mb-8">

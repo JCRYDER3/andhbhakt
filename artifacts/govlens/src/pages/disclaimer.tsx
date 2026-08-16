@@ -1,4 +1,3 @@
-import { Navbar } from '@/components/navbar';
 import { SEO } from '@/components/seo';
 import { Link } from 'wouter';
 import { ArrowLeft, AlertTriangle } from 'lucide-react';
@@ -9,7 +8,6 @@ export default function Disclaimer() {
   return (
     <div className="min-h-screen bg-background">
       <SEO title={t('disclaimerSeoTitle')} description={t('disclaimerSeoDesc')} path="/disclaimer" />
-      <Navbar />
 
       <div className="max-w-2xl mx-auto px-4 sm:px-6 py-10">
         <Link

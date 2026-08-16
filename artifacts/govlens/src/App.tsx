@@ -5,6 +5,7 @@ import { TooltipProvider } from '@/components/ui/tooltip';
 import NotFound from '@/pages/not-found';
 import { Route, Switch, Router as WouterRouter } from 'wouter';
 import { Footer } from '@/components/footer';
+import { Header } from '@/components/header';
 import { useTranslation } from 'react-i18next';
 
 const CentralData      = lazy(() => import('@/pages/central-data'));
@@ -69,7 +70,10 @@ function App() {
       <TooltipProvider>
         <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, '')}>
           <HtmlLangSync />
-          <Router />
+          <Header />
+          <main id="main-content" tabIndex={-1} className="min-w-0 outline-none">
+            <Router />
+          </main>
           <Footer />
         </WouterRouter>
         <Toaster />

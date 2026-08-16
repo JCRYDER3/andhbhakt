@@ -7,7 +7,7 @@ import runtimeErrorOverlay from '@replit/vite-plugin-runtime-error-modal';
 
 const rawPort = process.env.PORT;
 // PORT is only required for the dev/preview server, not for production builds
-const port = rawPort ? Number(rawPort) : 3000;
+const port = rawPort ? Number(rawPort) : 3100;
 
 // BASE_PATH is required for dev server routing; default to '/' for production builds
 const basePath = process.env.BASE_PATH ?? '/';

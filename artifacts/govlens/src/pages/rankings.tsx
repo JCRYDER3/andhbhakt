@@ -95,15 +95,23 @@ export default function Rankings() {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
         {/* Header */}
-        <div className="mb-6">
-          <Link href="/state-facts" className="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors mb-3">
-            <ArrowLeft className="w-3.5 h-3.5" />
-            {t('rankingsBack')}
+        <div className="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <Link href="/state-facts" className="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors mb-3">
+              <ArrowLeft className="w-3.5 h-3.5" />
+              {t('rankingsBack')}
+            </Link>
+            <h1 className="text-2xl font-bold text-foreground">{t('rankingsTitle')}</h1>
+            <p className="text-sm text-muted-foreground mt-0.5">
+              {t('rankingsDesc', { count: rows.length })}
+            </p>
+          </div>
+          <Link
+            href="/compare"
+            className="inline-flex items-center gap-2 px-3.5 py-2 rounded-lg text-xs font-semibold bg-primary text-primary-foreground hover:bg-primary/90 transition-colors shadow-sm self-start sm:self-auto"
+          >
+            <span>{isHi ? 'राज्यों की तुलना करें →' : 'Compare States →'}</span>
           </Link>
-          <h1 className="text-2xl font-bold text-foreground">{t('rankingsTitle')}</h1>
-          <p className="text-sm text-muted-foreground mt-0.5">
-            {t('rankingsDesc', { count: rows.length })}
-          </p>
         </div>
 
         {/* Category tabs */}

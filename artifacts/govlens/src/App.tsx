@@ -21,6 +21,7 @@ const TermsOfUse       = lazy(() => import('@/pages/terms'));
 const Disclaimer       = lazy(() => import('@/pages/disclaimer'));
 const ReportIssue      = lazy(() => import('@/pages/report-issue'));
 const AdminIssues      = lazy(() => import('@/pages/admin-issues'));
+const CompareStates    = lazy(() => import('@/pages/compare'));
 
 const queryClient = new QueryClient();
 
@@ -42,6 +43,7 @@ function Router() {
         <Route path="/reports" component={Reports} />
         <Route path="/state-facts" component={StateFacts} />
         <Route path="/rankings" component={Rankings} />
+        <Route path="/compare" component={CompareStates} />
         <Route path="/central-data" component={CentralData} />
         <Route path="/funding" component={Funding} />
         <Route path="/about" component={About} />

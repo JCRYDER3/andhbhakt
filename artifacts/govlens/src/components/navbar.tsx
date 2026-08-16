@@ -1,6 +1,6 @@
 import { Link, useLocation } from 'wouter';
 import { cn } from '@/lib/utils';
-import { Search, BarChart3, Menu, X, FileText, BookOpen, Flag, IndianRupee, Globe, Github } from 'lucide-react';
+import { Search, BarChart3, Menu, X, FileText, BookOpen, Flag, IndianRupee, Globe, Github, Layers } from 'lucide-react';
 import { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -13,6 +13,7 @@ export function Navbar() {
   const links = [
     { href: '/', label: t('navCentralData'), icon: Flag },
     { href: '/state-facts', label: t('navStateData'), icon: BookOpen },
+    { href: '/compare', label: t('navCompareStates', { defaultValue: 'Compare States' }), icon: Layers },
     { href: '/schemes', label: t('navCentralSchemes'), icon: Search },
     { href: '/reports', label: t('navCagReports'), icon: FileText },
     { href: '/funding', label: t('navPartyFunding'), icon: IndianRupee, badge: t('navBeta') },

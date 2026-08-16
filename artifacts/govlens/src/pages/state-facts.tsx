@@ -1347,12 +1347,20 @@ export default function StateFacts() {
               {t('stateDataSubtitle')}
             </p>
           </div>
-          <a
-            href={`${import.meta.env.BASE_URL.replace(/\/$/, '')}/rankings`}
-            className="flex-shrink-0 inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg border border-border bg-background text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors mt-0.5"
-          >
-            {t('viewRankings')}
-          </a>
+          <div className="flex items-center gap-2 flex-wrap flex-shrink-0 mt-0.5">
+            <Link
+              href="/compare"
+              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg border border-primary/40 bg-primary/10 text-sm font-semibold text-primary hover:bg-primary/20 transition-colors"
+            >
+              <span>{isHi ? 'तुलना करें' : 'Compare'}</span>
+            </Link>
+            <a
+              href={`${import.meta.env.BASE_URL.replace(/\/$/, '')}/rankings`}
+              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg border border-border bg-background text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+            >
+              {t('viewRankings')}
+            </a>
+          </div>
         </div>
 
         {/* State selector */}

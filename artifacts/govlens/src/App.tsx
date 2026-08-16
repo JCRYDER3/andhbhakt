@@ -15,6 +15,7 @@ const Schemes          = lazy(() => import('@/pages/schemes'));
 const SchemeDetail     = lazy(() => import('@/pages/scheme-detail'));
 const DevelopmentIndex = lazy(() => import('@/pages/development-index'));
 const Funding          = lazy(() => import('@/pages/funding'));
+const Politicians      = lazy(() => import('@/pages/politicians'));
 const MinisterProfile  = lazy(() => import('@/pages/minister-profile'));
 const About            = lazy(() => import('@/pages/about'));
 const TermsOfUse       = lazy(() => import('@/pages/terms'));
@@ -44,6 +45,7 @@ function Router() {
         <Route path="/rankings" component={Rankings} />
         <Route path="/central-data" component={CentralData} />
         <Route path="/funding" component={Funding} />
+        <Route path="/politicians" component={Politicians} />
         <Route path="/about" component={About} />
         <Route path="/terms" component={TermsOfUse} />
         <Route path="/disclaimer" component={Disclaimer} />

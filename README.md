@@ -11,6 +11,7 @@ A civic accountability platform that cross-references official government announ
 - **Scheme scorecards** — Every major Govt scheme (2014–present) rated against PIB press releases, CAG audit findings, and independent data (NFHS-5, NCRB, MOSPI, ASER).
 - **State governance cards** — 28 states + major UTs scored on integrity, monetary management, and development outcomes.
 - **Cabinet minister profiles** — Asset growth, criminal cases, and re-election trends sourced from ECI affidavits via ADR/myneta.info.
+- **Candidate affidavit database** — All ~8,300 Lok Sabha 2024 candidates (party, constituency, criminal cases, education, age, assets, liabilities) from ECI affidavits digitized by [ADR/myneta.info](https://www.myneta.info/LokSabha2024/).
 - **Manifesto tracker** — Three election terms (2014, 2019, 2024) mapped to delivery evidence term-by-term.
 - **Bilingual** — Full Hindi translation across all static data.
 
@@ -41,6 +42,9 @@ pnpm --filter @workspace/db run push
 
 # Load seed data (schemes, CAG audits, PIB entries — ~800 rows)
 psql "$DATABASE_URL" -f lib/db/seed.sql
+
+# Load politician affidavit data (Lok Sabha 2024 candidates, ~8.3k rows)
+psql "$DATABASE_URL" -f lib/db/seed_politicians.sql
 
 # Start the API server (port from $PORT env var)
 pnpm --filter @workspace/api-server run dev
@@ -74,7 +78,8 @@ artifacts/
     pages/           Frontend page components
     data/            Static civic data — schemes, state facts, ministers, manifestos, CAG reports
 lib/
-  db/                Drizzle schema + migrations
+  db/                Drizzle schema + migrations + seed SQL
+  db/data/           Crawled datasets (politicians from ADR/myneta.info)
   api-zod/           Auto-generated Zod schemas
   api-spec/          OpenAPI 3.1 spec (openapi.yaml)
 ```

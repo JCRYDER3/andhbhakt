@@ -71,3 +71,6 @@ __pycache__/
 *.pyc
 *.pyo
 .venv/
+
+# MyNeta crawler raw HTML cache
+scripts/.myneta-cache/

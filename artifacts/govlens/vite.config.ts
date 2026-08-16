@@ -56,6 +56,7 @@ export default defineConfig({
           if (id.includes('cag-reports-hi.json'))  return 'data-cag-hi';
           if (id.includes('state-facts-hi'))        return 'data-sf-hi';
           if (id.includes('cag-catalogue.json'))    return 'data-cag-catalogue';
+          if (id.includes('politicians-ls2024.json')) return 'data-politicians';
           if (id.includes('cag-reports.ts') || id.includes('cag-reports/'))
                                                     return 'data-cag';
           // Vendor splitting — ALL React-dependent packages must be co-located
@@ -82,6 +83,11 @@ export default defineConfig({
     fs: {
       strict: true,
     },
+    // Local dev only: forward /api to a locally running api-server, e.g.
+    //   API_PROXY_TARGET=http://localhost:3001 pnpm dev
+    ...(process.env.API_PROXY_TARGET
+      ? { proxy: { '/api': { target: process.env.API_PROXY_TARGET, changeOrigin: true } } }
+      : {}),
   },
   preview: {
     port,

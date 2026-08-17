@@ -1,0 +1,448 @@
+/**
+ * CropHealth dark tactical card system — copied into Andhbhakt for
+ * /reports and /schemes only. Do not treat as a site-wide reskin.
+ * Source: E:\CropHealthMonitor\styles\tokens.css (read-only).
+ */
+
+:root {
+  --ch-bg-void: #050505;
+  --ch-bg-base: #0a0a0b;
+  --ch-bg-elevated: #121214;
+  --ch-bg-panel: #161618;
+  --ch-bg-soft: #1c1c1f;
+  --ch-bg-glass: rgba(10, 10, 11, 0.82);
+  --ch-border-subtle: rgba(255, 255, 255, 0.06);
+  --ch-border-default: rgba(255, 255, 255, 0.1);
+  --ch-border-strong: rgba(255, 255, 255, 0.18);
+  --ch-border-focus: rgba(16, 185, 129, 0.55);
+  --ch-text-primary: #f5f5f4;
+  --ch-text-secondary: #d6d3d1;
+  --ch-text-muted: #a8a29e;
+  --ch-text-faint: #78716c;
+  --ch-text-inverse: #0c0a09;
+  --ch-accent: #10b981;
+  --ch-font-ui: 'Space Grotesk', system-ui, sans-serif;
+  --ch-font-mono: 'IBM Plex Mono', ui-monospace, monospace;
+  --ch-text-label: 0.625rem;
+  --ch-tracking-label: 0.2em;
+  --ch-tracking-display: -0.02em;
+  --ch-leading-tight: 0.9;
+  --ch-radius-sm: 0.5rem;
+  --ch-radius-md: 0.75rem;
+  --ch-radius-lg: 1rem;
+  --ch-radius-xl: 1.5rem;
+  --ch-radius-pill: 9999px;
+  --ch-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --ch-shadow-md: 0 8px 24px rgba(0, 0, 0, 0.45);
+  --ch-touch-min: 44px;
+  --ch-focus-ring: 0 0 0 2px var(--ch-bg-base), 0 0 0 4px var(--ch-border-focus);
+  --ch-duration-fast: 150ms;
+  --ch-duration: 200ms;
+  --ch-duration-slow: 300ms;
+  --ch-ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --page-accent: #c2410c;
+  --page-accent-rgb: 194, 65, 12;
+  --page-accent-text: #fdba74;
+}
+
+/* Flip Tailwind semantic tokens so muted/foreground stay AA on near-black. */
+.ch-listing,
+.ch-nav-dark {
+  --background: 240 4% 4%;
+  --foreground: 40 14% 96%;
+  --muted: 240 4% 14%;
+  --muted-foreground: 36 10% 86%;
+  --card: 240 5% 9%;
+  --card-foreground: 40 14% 96%;
+  --border: 30 4% 26%;
+  --primary: 32 96% 64%;
+  --primary-foreground: 20 14% 8%;
+  --input: 30 4% 26%;
+  --ring: 32 96% 64%;
+}
+
+.ch-listing {
+  background: var(--ch-bg-base);
+  color: var(--ch-text-primary);
+  min-height: 100dvh;
+  box-shadow: inset 0 4px 0 rgb(var(--page-accent-rgb));
+}
+
+.ch-listing h1,
+.ch-listing .ch-listing__title {
+  color: var(--ch-text-primary);
+}
+
+.ch-listing .ch-listing__lede {
+  color: var(--ch-text-secondary);
+}
+
+.ch-nav-dark {
+  background: var(--ch-bg-glass) !important;
+  border-color: var(--ch-border-subtle) !important;
+  color: var(--ch-text-primary);
+}
+
+.ch-nav-dark .text-foreground,
+header.ch-nav-dark .text-foreground {
+  color: #f5f5f4 !important;
+}
+
+.ch-nav-dark .text-muted-foreground,
+header.ch-nav-dark .text-muted-foreground {
+  color: #e7e5e4 !important;
+}
+
+.ch-nav-dark .ch-nav-link {
+  color: #e7e5e4;
+}
+
+.ch-nav-dark .ch-nav-link:hover {
+  color: #fafaf9;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.ch-nav-dark .ch-nav-link--active {
+  color: var(--page-accent-text, #fdba74);
+  background: rgba(var(--page-accent-rgb), 0.18);
+}
+
+.ch-card {
+  background-color: var(--ch-bg-elevated);
+  border: 1px solid var(--ch-border-default);
+  border-radius: var(--ch-radius-lg);
+  padding: 1rem;
+  box-shadow: var(--ch-shadow-sm);
+}
+
+.ch-card--panel {
+  border-radius: var(--ch-radius-xl);
+  padding: 1.25rem;
+  background-color: var(--ch-bg-panel);
+}
+
+.ch-metric__value {
+  font-family: var(--ch-font-ui);
+  font-size: 1.75rem;
+  font-weight: 900;
+  letter-spacing: var(--ch-tracking-display);
+  line-height: var(--ch-leading-tight);
+  color: var(--ch-text-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+.ch-label {
+  font-family: var(--ch-font-ui);
+  font-size: var(--ch-text-label);
+  font-weight: 800;
+  letter-spacing: var(--ch-tracking-label);
+  text-transform: uppercase;
+  color: var(--ch-text-muted);
+}
+
+/* Department / scheme / report names follow the header colour picker. */
+.ch-page-accent-text {
+  color: var(--page-accent-text, #fdba74) !important;
+}
+
+.ch-freshness {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  min-height: 28px;
+  padding: 0.125rem 0.45rem;
+  margin: 0;
+  border: 1px solid transparent;
+  border-radius: var(--ch-radius-pill);
+  background: transparent;
+  cursor: default;
+  font-family: var(--ch-font-mono);
+  line-height: 1;
+}
+
+.ch-freshness:focus-visible {
+  box-shadow: var(--ch-focus-ring);
+}
+
+.ch-freshness__dot {
+  width: 0.4rem;
+  height: 0.4rem;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.ch-freshness__label {
+  font-size: 0.5625rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.ch-freshness__tip {
+  display: none;
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 6px);
+  transform: translateX(-50%);
+  z-index: 80;
+  min-width: 12rem;
+  max-width: 18rem;
+  padding: 0.4rem 0.6rem;
+  border-radius: var(--ch-radius-sm);
+  background: var(--ch-bg-panel);
+  border: 1px solid var(--ch-border-default);
+  color: var(--ch-text-primary);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  line-height: 1.35;
+  text-transform: none;
+  letter-spacing: 0.01em;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .ch-freshness:hover .ch-freshness__tip {
+    display: block;
+  }
+}
+
+.ch-freshness:focus .ch-freshness__tip,
+.ch-freshness:focus-visible .ch-freshness__tip,
+.ch-freshness[data-open='true'] .ch-freshness__tip {
+  display: block;
+}
+
+.ch-state-card {
+  --ch-state-rgb: 16, 185, 129;
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  min-height: 100%;
+  background:
+    linear-gradient(160deg, rgba(var(--ch-state-rgb), 0.14) 0%, rgba(var(--ch-state-rgb), 0.03) 48%, var(--ch-bg-panel) 100%);
+  border: 2px solid rgba(var(--page-accent-rgb), 0.55);
+  box-shadow:
+    0 0 24px -12px rgba(var(--page-accent-rgb), 0.28),
+    inset 0 0 18px rgba(var(--page-accent-rgb), 0.05);
+  touch-action: manipulation;
+}
+
+.ch-state-card--landscape {
+  min-height: 0;
+  padding: 1.25rem 1.4rem 1.35rem;
+}
+
+.ch-state-card__yantra {
+  position: absolute;
+  top: -22%;
+  right: -18%;
+  width: 92%;
+  height: 92%;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.5;
+  filter: drop-shadow(0 0 12px rgba(var(--ch-state-rgb), 0.45));
+}
+
+.ch-state-card__yantra svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.ch-state-card__yantra-orbit {
+  animation: ch-pulse-spin 42s linear infinite;
+}
+
+.ch-state-card__yantra-motif {
+  animation: ch-pulse-spin-reverse 64s linear infinite;
+}
+
+.ch-state-card__yantra-crawl {
+  stroke-dasharray: 8 12;
+  animation: ch-yantra-crawl 16s linear infinite;
+}
+
+.ch-state-card__scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    linear-gradient(108deg, rgba(12, 12, 14, 0.82) 0%, rgba(12, 12, 14, 0.52) 34%, transparent 66%),
+    linear-gradient(180deg, transparent 40%, rgba(12, 12, 14, 0.28) 100%);
+}
+
+.ch-state-card__ring {
+  position: absolute;
+  inset: 5px;
+  width: calc(100% - 10px);
+  height: calc(100% - 10px);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.ch-state-card__ring rect {
+  fill: none;
+  stroke: var(--page-accent);
+  stroke-width: 1.25;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  opacity: 0.55;
+}
+
+.ch-state-card.is-inview .ch-state-card__ring rect {
+  animation: ch-state-ring 300ms var(--ch-ease) forwards;
+}
+
+.ch-state-card .ch-freshness {
+  position: relative;
+  z-index: 5;
+}
+
+.ch-state-card.is-pressed {
+  transform: scale(0.985);
+  border-color: var(--page-accent);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .ch-state-card:hover {
+    border-color: var(--page-accent);
+    box-shadow:
+      0 0 32px -10px rgba(var(--page-accent-rgb), 0.36),
+      inset 0 0 20px rgba(var(--page-accent-rgb), 0.07);
+  }
+  .ch-state-card:hover .ch-state-card__yantra {
+    opacity: 0.66;
+  }
+}
+
+@keyframes ch-pulse-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes ch-pulse-spin-reverse {
+  from { transform: rotate(360deg); }
+  to { transform: rotate(0deg); }
+}
+
+@keyframes ch-yantra-crawl {
+  to { stroke-dashoffset: -120; }
+}
+
+@keyframes ch-state-ring {
+  to { stroke-dashoffset: 0; }
+}
+
+.ch-chip-signal {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  min-height: 28px;
+  padding: 0.2rem 0.5rem;
+  border-radius: 0.25rem;
+  border: 1px solid currentColor;
+  background: transparent;
+  font-family: var(--ch-font-mono);
+  font-size: 0.625rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.ch-chip-signal--critical,
+.ch-chip-signal--high {
+  color: #fda4af;
+  border-color: #9f1239;
+  background: rgba(127, 29, 29, 0.35);
+}
+
+.ch-chip-signal--major,
+.ch-chip-signal--medium {
+  color: #93c5fd;
+  border-color: #1e3a8a;
+  background: rgba(30, 58, 138, 0.35);
+}
+
+.ch-chip-signal--minor,
+.ch-chip-signal--low {
+  color: #86efac;
+  border-color: #14532d;
+  background: rgba(20, 83, 45, 0.35);
+}
+
+.ch-chip-signal--central {
+  color: #e9d5ff;
+  border-style: dashed;
+  border-color: #6b21a8;
+  background: rgba(88, 28, 135, 0.28);
+}
+
+.ch-chip-signal--unaudited {
+  color: #d6d3d1;
+  border-color: #44403c;
+  background: rgba(28, 25, 23, 0.6);
+}
+
+.ch-btn-outline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  min-height: var(--ch-touch-min);
+  padding: 0 0.9rem;
+  border-radius: var(--ch-radius-md);
+  border: 1px solid rgba(var(--page-accent-rgb), 0.55);
+  background: var(--ch-bg-panel);
+  color: var(--page-accent);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.ch-btn-outline:hover,
+.ch-btn-outline:focus-visible {
+  background: rgba(var(--ch-state-rgb, 234, 179, 8), 0.12);
+  outline: none;
+  box-shadow: var(--ch-focus-ring);
+}
+
+.ch-control {
+  min-height: var(--ch-touch-min);
+  border: 1px solid var(--ch-border-default);
+  border-radius: var(--ch-radius-md);
+  background: var(--ch-bg-elevated);
+  color: var(--ch-text-primary);
+}
+
+.ch-control:focus,
+.ch-control:focus-visible {
+  outline: none;
+  border-color: rgba(var(--ch-state-rgb, 56, 189, 248), 0.7);
+  box-shadow: var(--ch-focus-ring);
+}
+
+.ch-filter-bar {
+  border: 1px solid var(--ch-border-default);
+  border-radius: var(--ch-radius-xl);
+  background: var(--ch-bg-panel);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ch-state-card.is-pressed,
+  .ch-state-card:hover {
+    transform: none;
+  }
+  .ch-state-card.is-inview .ch-state-card__ring rect {
+    animation: none;
+    stroke-dashoffset: 0;
+  }
+  .ch-state-card__yantra-orbit,
+  .ch-state-card__yantra-motif,
+  .ch-state-card__yantra-crawl {
+    animation: none;
+  }
+}

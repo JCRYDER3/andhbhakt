@@ -82,7 +82,7 @@ app.use("/api/session/verify", sessionLimiter);
 app.use("/api", cacheHeaders);
 
 // Session gate: every request in production must carry a valid Turnstile-issued
-// cookie. Bypasses: POST /api/session/verify and GET /api/healthz.
+// cookie. Bypasses: POST /api/session/verify and GET /api/healthz|/api/health.
 app.use("/api", verifySessionMiddleware);
 
 app.use("/api", router);

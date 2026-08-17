@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Navbar } from '@/components/navbar';
 import { SEO } from '@/components/seo';
 import {
   BONDS_META, PARTY_FUNDING, TOP_DONORS, PARTY_COLOR, PARTY_INCOME_HISTORY,
@@ -12,6 +11,8 @@ import {
 } from 'recharts';
 import { ChevronDown, ChevronUp, ExternalLink, AlertTriangle, IndianRupee, Building2, TrendingUp } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { IdentityListingCard, SeveritySignal } from '@/components/ch/IdentityListingCard';
+import { familyFromCoalition, familyFromSector, hashedCardIdentity } from '@/lib/ch/stateIdentity';
 
 // ─── helpers ────────────────────────────────────────────────────────────────
 
@@ -64,20 +65,23 @@ PARTY_FUNDING.forEach(p => {
 
 // ─── sub-components ─────────────────────────────────────────────────────────
 
-function StatCard({ label, value, sub, icon: Icon, accent }: {
-  label: string; value: string; sub?: string; icon: React.ElementType; accent: string;
+function StatCard({ label, value, sub, family }: {
+  label: string; value: string; sub?: string; family: 'gold' | 'air' | 'forest' | 'water' | 'earth' | 'orchid';
 }) {
+  const identity = hashedCardIdentity(label, family);
   return (
-    <div className={cn('rounded-xl border border-border bg-card p-4 flex gap-3 items-start', accent)}>
-      <div className="w-9 h-9 rounded-lg flex items-center justify-center bg-muted flex-shrink-0">
-        <Icon className="w-4 h-4 text-muted-foreground" />
-      </div>
-      <div>
-        <div className="text-xl font-bold text-foreground">{value}</div>
-        <div className="text-xs text-muted-foreground">{label}</div>
-        {sub && <div className="text-xs text-muted-foreground/70 mt-0.5">{sub}</div>}
-      </div>
-    </div>
+    <IdentityListingCard
+      identity={identity}
+      eyebrow={label}
+      title={label}
+      headline={value}
+      headlineLabel={sub}
+      source={BONDS_META.source}
+      asOf={BONDS_META.scJudgment}
+      scope="India"
+      freshness="static"
+      freshnessDetail="ECI electoral-bond disclosure (March 2024), compiled in this checkout."
+    />
   );
 }
 
@@ -108,47 +112,32 @@ function DonorRow({ donor, rank }: { donor: Donor; rank: number }) {
   const topParty = donor.parties[0];
   const topPct   = Math.round((topParty.amount / donor.amount) * 100);
 
+  const identity = hashedCardIdentity(donor.shortName, familyFromSector(donor.sector));
+
   return (
-    <div className={cn(
-      'border border-border rounded-xl overflow-hidden transition-all',
-      open ? 'bg-card' : 'bg-card/60 hover:bg-card',
-    )}>
-      {/* header row */}
-      <button
-        className="w-full flex items-center gap-3 px-4 py-3 text-left"
-        onClick={() => setOpen(v => !v)}
-      >
-        {/* rank badge */}
-        <span className="w-7 h-7 rounded-full bg-muted flex items-center justify-center text-xs font-bold text-muted-foreground flex-shrink-0">
-          {rank}
-        </span>
-
-        {/* name + sector */}
-        <div className="flex-1 min-w-0">
-          <div className="font-semibold text-sm text-foreground truncate">{donor.name}</div>
-          <div className="text-xs text-muted-foreground">{donor.sector}</div>
-        </div>
-
-        {/* amount */}
-        <div className="text-right flex-shrink-0">
-          <div className="font-bold text-base text-foreground">{fmt(donor.amount, isHiDonor)}</div>
-          <div className="text-xs text-muted-foreground">
-            {t('topLabel')} <span className="font-medium" style={{ color: PARTY_COLOR[topParty.shortName] ?? '#888' }}>
-              {topParty.shortName}
-            </span>
-            {' '}({topPct}%)
-          </div>
-        </div>
-
-        {/* chevron */}
-        <div className="flex-shrink-0 ml-1 text-muted-foreground">
-          {open ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-        </div>
-      </button>
+    <IdentityListingCard
+      identity={identity}
+      eyebrow={donor.sector}
+      title={donor.name}
+      headline={fmt(donor.amount, isHiDonor)}
+      headlineLabel={`${t('topLabel')} ${topParty.shortName} (${topPct}%)`}
+      source={BONDS_META.source}
+      asOf="March 2024"
+      scope="India"
+      freshness="static"
+      freshnessDetail="ECI electoral-bond disclosure (March 2024), compiled in this checkout."
+      chip={<SeveritySignal kind="central" label={`#${rank}`} />}
+      actions={
+        <button type="button" className="ch-btn-outline" onClick={() => setOpen((v) => !v)}>
+          {open ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
+          {open ? t('showLess') : t('readFullFindings')}
+        </button>
+      }
+    >
 
       {/* expanded detail */}
       {open && (
-        <div className="px-4 pb-4 border-t border-border pt-3 space-y-3">
+        <div className="space-y-3 text-[var(--ch-text-secondary)]">
           {/* note */}
           <p className="text-xs text-muted-foreground bg-muted/50 rounded-lg p-2.5 leading-relaxed">
             {donor.note}
@@ -204,7 +193,7 @@ function DonorRow({ donor, rank }: { donor: Donor; rank: number }) {
           </div>
         </div>
       )}
-    </div>
+    </IdentityListingCard>
   );
 }
 
@@ -245,16 +234,15 @@ export default function Funding() {
   const bjpShare = Math.round((5594 / totalPartyBonds) * 100);
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="ch-listing">
       <SEO
         title="Electoral Bond Funding — Who Funds Which Political Party"
         description="Follow the money in Indian politics — electoral bond data showing which companies funded BJP, Congress, and other parties. Sourced from SBI and Election Commission disclosures."
         path="/funding"
         ogImage="/og/default.jpg"
       />
-      <Navbar />
 
-      <main className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
 
         {/* ── hero header ── */}
         <div>
@@ -263,8 +251,8 @@ export default function Funding() {
               <IndianRupee className="w-5 h-5 text-amber-500" />
             </div>
             <div>
-              <h1 className="text-2xl font-bold text-foreground">{t('pageTitle')}</h1>
-              <p className="text-sm text-muted-foreground mt-0.5">
+              <h1 className="ch-listing__title text-2xl font-bold">{t('pageTitle')}</h1>
+              <p className="ch-listing__lede mt-0.5 text-sm">
                 {t('pageSubtitle')}
               </p>
             </div>
@@ -283,34 +271,30 @@ export default function Funding() {
         </div>
 
         {/* ── stat cards ── */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
           <StatCard
-            icon={IndianRupee}
             label={t('totalBondsSold')}
             value="₹16,518 cr"
             sub={t('bondsRedeemed')}
-            accent=""
+            family="gold"
           />
           <StatCard
-            icon={TrendingUp}
             label={t('bjpShare')}
             value={`${bjpShare}%`}
             sub={t('bjpTotal')}
-            accent=""
+            family="earth"
           />
           <StatCard
-            icon={Building2}
             label={t('topCorporateDonor')}
             value={t('topDonorName')}
             sub={t('topDonorDetail')}
-            accent=""
+            family="orchid"
           />
           <StatCard
-            icon={IndianRupee}
             label={t('partiesReceivedBonds')}
             value="24 parties"
             sub={`${PARTY_FUNDING.length} ${t('partiesAnalysed')}`}
-            accent=""
+            family="water"
           />
         </div>
 
@@ -368,7 +352,7 @@ export default function Funding() {
             </div>
 
             {/* bar chart */}
-            <div className="rounded-xl border border-border bg-card p-4">
+            <div className="ch-filter-bar p-4">
               <div className="text-xs text-muted-foreground mb-4">
                 {t('chartCaption')}
               </div>
@@ -399,83 +383,54 @@ export default function Funding() {
               </ResponsiveContainer>
             </div>
 
-            {/* party table */}
-            <div className="rounded-xl border border-border overflow-hidden">
-              <table className="w-full text-sm">
-                <thead>
-                  <tr className="border-b border-border bg-muted/40">
-                    <th className="text-left px-4 py-2.5 text-xs font-semibold text-muted-foreground uppercase tracking-wide">{t('rowNumber')}</th>
-                    <th className="text-left px-4 py-2.5 text-xs font-semibold text-muted-foreground uppercase tracking-wide">{t('partyColumn')}</th>
-                    <th className="text-left px-4 py-2.5 text-xs font-semibold text-muted-foreground uppercase tracking-wide hidden sm:table-cell">{t('coalitionColumn')}</th>
-                    <th className="text-right px-4 py-2.5 text-xs font-semibold text-muted-foreground uppercase tracking-wide">{t('bondsColumn')}</th>
-                    <th className="text-right px-4 py-2.5 text-xs font-semibold text-muted-foreground uppercase tracking-wide">{t('shareColumn')}</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {filteredParties.map((p, i) => {
-                    const share = ((p.amount / totalPartyBonds) * 100).toFixed(1);
-                    return (
-                      <tr key={p.shortName} className={cn('border-b border-border/50 last:border-0', i % 2 === 0 ? '' : 'bg-muted/20')}>
-                        <td className="px-4 py-2.5 text-muted-foreground text-xs">{i + 1}</td>
-                        <td className="px-4 py-2.5">
-                          <div className="flex items-center gap-2">
-                            <span className="w-2.5 h-2.5 rounded-full flex-shrink-0" style={{ background: p.color }} />
-                            <div>
-                              <div className="font-medium text-foreground">{p.party}</div>
-                              <div className="text-xs text-muted-foreground hidden sm:block">{isHi ? (IDEOLOGY_HI[p.ideology] ?? p.ideology) : p.ideology}</div>
-                            </div>
-                          </div>
-                        </td>
-                        <td className="px-4 py-2.5 hidden sm:table-cell">
-                          <span className="text-xs px-2 py-0.5 rounded-full bg-muted text-muted-foreground">
-                            {isHi ? (COALITION_HI[p.coalition] ?? p.coalition) : p.coalition}
-                          </span>
-                        </td>
-                        <td className="px-4 py-2.5 text-right font-mono font-semibold text-foreground">
-                          {p.amount.toLocaleString('en-IN')}
-                        </td>
-                        <td className="px-4 py-2.5 text-right">
-                          <div className="flex items-center justify-end gap-1.5">
-                            <div className="w-16 bg-muted rounded-full h-1.5 overflow-hidden">
-                              <div className="h-1.5 rounded-full" style={{ width: `${Math.min(parseFloat(share), 100)}%`, background: p.color }} />
-                            </div>
-                            <span className="text-xs text-muted-foreground w-10 text-right">{share}%</span>
-                          </div>
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-                <tfoot>
-                  <tr className="border-t-2 border-border bg-muted/40">
-                    <td colSpan={3} className="px-4 py-2.5 text-xs font-semibold text-muted-foreground uppercase tracking-wide">
-                      {t('totalShown')}
-                    </td>
-                    <td className="px-4 py-2.5 text-right font-bold font-mono text-foreground">
-                      {filteredParties.reduce((s, p) => s + p.amount, 0).toLocaleString('en-IN')}
-                    </td>
-                    <td className="px-4 py-2.5 text-right text-xs text-muted-foreground">
-                      {((filteredParties.reduce((s, p) => s + p.amount, 0) / totalPartyBonds) * 100).toFixed(1)}%
-                    </td>
-                  </tr>
-                </tfoot>
-              </table>
+            <div className="grid gap-4 md:grid-cols-2">
+              {filteredParties.map((p) => {
+                const share = ((p.amount / totalPartyBonds) * 100).toFixed(1);
+                const identity = hashedCardIdentity(p.shortName, familyFromCoalition(p.coalition));
+                return (
+                  <IdentityListingCard
+                    key={p.shortName}
+                    identity={identity}
+                    eyebrow={isHi ? (COALITION_HI[p.coalition] ?? p.coalition) : p.coalition}
+                    title={p.party}
+                    headline={fmt(p.amount, isHi)}
+                    headlineLabel={`${share}% ${t('ofTotal')}`}
+                    source={BONDS_META.source}
+                    asOf="March 2024"
+                    scope="India"
+                    freshness="static"
+                    freshnessDetail="ECI electoral-bond disclosure (March 2024), compiled in this checkout."
+                    chip={
+                      <SeveritySignal
+                        kind={p.coalition === 'NDA' ? 'central' : p.coalition === 'INDIA' ? 'minor' : 'unaudited'}
+                        label={isHi ? (COALITION_HI[p.coalition] ?? p.coalition) : p.coalition}
+                      />
+                    }
+                  />
+                );
+              })}
             </div>
 
             {/* NDA vs INDIA insight callout */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
               {[
-                { label: t('ndaReceived'), amount: COALITION_TOTALS['NDA'] ?? 0, color: '#FF6600' },
-                { label: t('indiaReceived'), amount: COALITION_TOTALS['INDIA'] ?? 0, color: '#138808' },
-                { label: t('regionalOther'), amount: (COALITION_TOTALS['State'] ?? 0) + (COALITION_TOTALS['Other'] ?? 0), color: '#78909C' },
-              ].map(item => (
-                <div key={item.label} className="rounded-xl border border-border bg-card/60 p-3 text-center">
-                  <div className="text-lg font-bold" style={{ color: item.color }}>{fmt(item.amount, isHi)}</div>
-                  <div className="text-xs text-muted-foreground mt-0.5">{item.label}</div>
-                  <div className="text-xs text-muted-foreground/60">
-                    {((item.amount / totalPartyBonds) * 100).toFixed(1)}% {t('ofTotal')}
-                  </div>
-                </div>
+                { label: t('ndaReceived'), amount: COALITION_TOTALS['NDA'] ?? 0, family: 'gold' as const },
+                { label: t('indiaReceived'), amount: COALITION_TOTALS['INDIA'] ?? 0, family: 'forest' as const },
+                { label: t('regionalOther'), amount: (COALITION_TOTALS['State'] ?? 0) + (COALITION_TOTALS['Other'] ?? 0), family: 'water' as const },
+              ].map((item) => (
+                <IdentityListingCard
+                  key={item.label}
+                  identity={hashedCardIdentity(item.label, item.family)}
+                  eyebrow={item.label}
+                  title={item.label}
+                  headline={fmt(item.amount, isHi)}
+                  headlineLabel={`${((item.amount / totalPartyBonds) * 100).toFixed(1)}% ${t('ofTotal')}`}
+                  source={BONDS_META.source}
+                  asOf="March 2024"
+                  scope="India"
+                  freshness="static"
+                  freshnessDetail="Coalition roll-up from the same ECI disclosure."
+                />
               ))}
             </div>
           </div>
@@ -499,7 +454,7 @@ export default function Funding() {
               </a>
             </p>
 
-            <div className="space-y-2">
+            <div className="grid gap-4 md:grid-cols-2">
               {TOP_DONORS.map(donor => (
                 <DonorRow key={donor.rank} donor={donor} rank={donor.rank} />
               ))}
@@ -598,7 +553,7 @@ export default function Funding() {
               </div>
 
               {/* line chart */}
-              <div className="rounded-xl border border-border bg-card p-4">
+              <div className="ch-filter-bar p-4">
                 <ResponsiveContainer width="100%" height={320}>
                   <LineChart
                     data={PARTY_INCOME_HISTORY}
@@ -651,7 +606,7 @@ export default function Funding() {
               </div>
 
               {/* ── closing balance panel ── */}
-              <div className="rounded-xl border border-border bg-card p-4 space-y-3">
+              <div className="ch-filter-bar p-4 space-y-3">
                 <div className="flex items-center justify-between">
                   <div>
                     <div className="text-sm font-semibold text-foreground">{t('assetsTitle')}</div>
@@ -786,7 +741,7 @@ export default function Funding() {
           </p>
         </div>
 
-      </main>
+      </div>
     </div>
   );
 }

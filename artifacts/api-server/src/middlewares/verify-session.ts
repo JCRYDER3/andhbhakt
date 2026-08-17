@@ -12,6 +12,7 @@
  * Bypass list:
  *  - POST /api/session/verify  (the endpoint that issues cookies)
  *  - GET  /api/healthz         (deployment health checks)
+ *  - GET  /api/health          (local Vite / Windows health probe)
  */
 
 import { createHmac, timingSafeEqual } from "crypto";
@@ -35,6 +36,7 @@ const COOKIE_NAME = "govlens_sess";
 const BYPASS_ROUTES: Array<{ method: string; path: string }> = [
   { method: "POST", path: "/session/verify" },
   { method: "GET",  path: "/healthz" },
+  { method: "GET",  path: "/health" },
 ];
 
 function sign(ts: number): string {

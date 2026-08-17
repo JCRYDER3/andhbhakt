@@ -1,0 +1,229 @@
+/**
+ * Andhbhakt.org design tokens
+ *
+ * Single source for color, type, space, radius, and elevation.
+ * Tailwind maps these via @theme in src/index.css.
+ * JS consumers: import from '@/styles/tokens'.
+ *
+ * Palette intent: institutional navy + saffron civic accent.
+ * Contrast: body and UI chrome meet WCAG AA (4.5:1) on light and dark surfaces.
+ */
+
+:root {
+  --button-outline: rgba(0, 0, 0, 0.12);
+  --badge-outline: rgba(0, 0, 0, 0.06);
+  --opaque-button-border-intensity: -8;
+  --elevate-1: rgba(0, 0, 0, 0.03);
+  --elevate-2: rgba(0, 0, 0, 0.08);
+
+  /* Surfaces */
+  --background: 210 20% 98%;
+  --foreground: 215 28% 10%;
+  --border: 215 16% 84%;
+
+  --card: 0 0% 100%;
+  --card-foreground: 215 28% 10%;
+  --card-border: 215 14% 88%;
+
+  --sidebar: 215 30% 16%;
+  --sidebar-foreground: 210 15% 92%;
+  --sidebar-border: 215 25% 22%;
+  --sidebar-primary: 22 90% 42%;
+  --sidebar-primary-foreground: 0 0% 100%;
+  --sidebar-accent: 215 25% 24%;
+  --sidebar-accent-foreground: 210 15% 95%;
+  --sidebar-ring: 22 90% 42%;
+
+  --popover: 0 0% 100%;
+  --popover-foreground: 215 28% 10%;
+  --popover-border: 215 14% 86%;
+
+  /* Brand — saffron, darkened vs the previous 53% L so white-on-primary hits AA */
+  --primary: 22 90% 42%;
+  --primary-foreground: 0 0% 100%;
+
+  --secondary: 215 20% 92%;
+  --secondary-foreground: 215 28% 14%;
+
+  /* 215 18% 32% on 210 20% 98% ≈ 7:1 */
+  --muted: 215 16% 94%;
+  --muted-foreground: 215 18% 32%;
+
+  --accent: 215 78% 42%;
+  --accent-foreground: 0 0% 100%;
+
+  --destructive: 0 78% 46%;
+  --destructive-foreground: 0 0% 100%;
+
+  --input: 215 16% 78%;
+  --ring: 22 90% 42%;
+
+  /* Severity — used with a text label, not color alone */
+  --chart-1: 0 78% 46%;
+  --chart-2: 32 90% 40%;
+  --chart-3: 42 90% 38%;
+  --chart-4: 148 62% 32%;
+  --chart-5: 215 12% 42%;
+
+  --app-font-sans: 'Space Grotesk', system-ui, sans-serif;
+  --app-font-serif: Georgia, 'Times New Roman', serif;
+  --app-font-mono: 'IBM Plex Mono', ui-monospace, 'Courier New', monospace;
+
+  /* Type scale (base 16px, body line-height 1.5) */
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+  --text-3xl: 1.875rem;
+  --leading-tight: 1.25;
+  --leading-snug: 1.375;
+  --leading-body: 1.5;
+  --tracking-normal: -0.01em;
+
+  /* Spacing scale (4px grid) */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --spacing: 0.25rem;
+
+  --radius: 0.375rem;
+
+  --shadow-2xs: 0px 1px 2px 0px rgba(15, 23, 42, 0.05);
+  --shadow-xs: 0px 1px 3px 0px rgba(15, 23, 42, 0.08);
+  --shadow-sm:
+    0px 1px 2px 0px rgba(15, 23, 42, 0.06),
+    0px 1px 3px 0px rgba(15, 23, 42, 0.08);
+  --shadow:
+    0px 2px 4px -1px rgba(15, 23, 42, 0.06),
+    0px 4px 6px -1px rgba(15, 23, 42, 0.08);
+  --shadow-md:
+    0px 4px 6px -2px rgba(15, 23, 42, 0.05),
+    0px 10px 15px -3px rgba(15, 23, 42, 0.08);
+  --shadow-lg:
+    0px 10px 15px -3px rgba(15, 23, 42, 0.08),
+    0px 20px 25px -5px rgba(15, 23, 42, 0.1);
+  --shadow-xl:
+    0px 20px 25px -5px rgba(15, 23, 42, 0.1),
+    0px 25px 50px -12px rgba(15, 23, 42, 0.16);
+  --shadow-2xl: 0px 25px 50px -12px rgba(15, 23, 42, 0.2);
+
+  --header-height: 4rem;
+  --touch-min: 2.75rem;
+
+  --sidebar-primary-border: hsl(var(--sidebar-primary));
+  --sidebar-primary-border: hsl(
+    from hsl(var(--sidebar-primary)) h s
+      calc(l + var(--opaque-button-border-intensity)) / alpha
+  );
+  --sidebar-accent-border: hsl(var(--sidebar-accent));
+  --sidebar-accent-border: hsl(
+    from hsl(var(--sidebar-accent)) h s
+      calc(l + var(--opaque-button-border-intensity)) / alpha
+  );
+  --primary-border: hsl(var(--primary));
+  --primary-border: hsl(
+    from hsl(var(--primary)) h s
+      calc(l + var(--opaque-button-border-intensity)) / alpha
+  );
+  --secondary-border: hsl(var(--secondary));
+  --secondary-border: hsl(
+    from hsl(var(--secondary)) h s
+      calc(l + var(--opaque-button-border-intensity)) / alpha
+  );
+  --muted-border: hsl(var(--muted));
+  --muted-border: hsl(
+    from hsl(var(--muted)) h s calc(l + var(--opaque-button-border-intensity)) /
+      alpha
+  );
+  --accent-border: hsl(var(--accent));
+  --accent-border: hsl(
+    from hsl(var(--accent)) h s
+      calc(l + var(--opaque-button-border-intensity)) / alpha
+  );
+  --destructive-border: hsl(var(--destructive));
+  --destructive-border: hsl(
+    from hsl(var(--destructive)) h s
+      calc(l + var(--opaque-button-border-intensity)) / alpha
+  );
+}
+
+.dark {
+  --button-outline: rgba(255, 255, 255, 0.12);
+  --badge-outline: rgba(255, 255, 255, 0.06);
+  --opaque-button-border-intensity: 9;
+  --elevate-1: rgba(255, 255, 255, 0.04);
+  --elevate-2: rgba(255, 255, 255, 0.09);
+
+  --background: 215 25% 8%;
+  --foreground: 210 20% 96%;
+  --border: 215 18% 22%;
+
+  --card: 215 25% 10%;
+  --card-foreground: 210 20% 96%;
+  --card-border: 215 18% 18%;
+
+  --sidebar: 215 30% 6%;
+  --sidebar-foreground: 210 15% 90%;
+  --sidebar-border: 215 25% 12%;
+  --sidebar-primary: 24 92% 58%;
+  --sidebar-primary-foreground: 215 28% 8%;
+  --sidebar-accent: 215 25% 14%;
+  --sidebar-accent-foreground: 210 15% 95%;
+  --sidebar-ring: 24 92% 58%;
+
+  --popover: 215 25% 10%;
+  --popover-foreground: 210 20% 96%;
+  --popover-border: 215 18% 22%;
+
+  --primary: 24 92% 58%;
+  --primary-foreground: 215 28% 8%;
+
+  --secondary: 215 20% 18%;
+  --secondary-foreground: 210 20% 96%;
+
+  --muted: 215 18% 16%;
+  --muted-foreground: 210 14% 78%;
+
+  --accent: 215 80% 68%;
+  --accent-foreground: 215 25% 10%;
+
+  --destructive: 0 78% 62%;
+  --destructive-foreground: 0 0% 100%;
+
+  --input: 215 18% 26%;
+  --ring: 24 92% 58%;
+
+  --chart-1: 0 78% 62%;
+  --chart-2: 36 92% 56%;
+  --chart-3: 48 90% 58%;
+  --chart-4: 148 55% 48%;
+  --chart-5: 215 12% 62%;
+
+  --shadow-2xs: 0px 1px 2px 0px rgba(0, 0, 0, 0.3);
+  --shadow-xs: 0px 1px 3px 0px rgba(0, 0, 0, 0.4);
+  --shadow-sm:
+    0px 1px 2px 0px rgba(0, 0, 0, 0.3),
+    0px 1px 3px 0px rgba(0, 0, 0, 0.4);
+  --shadow:
+    0px 2px 4px -1px rgba(0, 0, 0, 0.3),
+    0px 4px 6px -1px rgba(0, 0, 0, 0.4);
+  --shadow-md:
+    0px 4px 6px -2px rgba(0, 0, 0, 0.3),
+    0px 10px 15px -3px rgba(0, 0, 0, 0.4);
+  --shadow-lg:
+    0px 10px 15px -3px rgba(0, 0, 0, 0.4),
+    0px 20px 25px -5px rgba(0, 0, 0, 0.5);
+  --shadow-xl:
+    0px 20px 25px -5px rgba(0, 0, 0, 0.4),
+    0px 25px 50px -12px rgba(0, 0, 0, 0.6);
+  --shadow-2xl: 0px 25px 50px -12px rgba(0, 0, 0, 0.6);
+}

@@ -1,5 +1,4 @@
 import { useTranslation } from 'react-i18next';
-import { Navbar } from '@/components/navbar';
 import { useState, useMemo, useEffect } from 'react';
 import { SEO } from '@/components/seo';
 import {
@@ -10,6 +9,8 @@ import {
 // Total report count — hardcoded so the header shows immediately before data loads
 const TOTAL_REPORTS = 1808;
 import { Search, ExternalLink, Download, Filter, X, ChevronDown, ChevronUp, FileText } from 'lucide-react';
+import { IdentityListingCard, SeveritySignal } from '@/components/ch/IdentityListingCard';
+import { familyFromCagWing, hashedCardIdentity } from '@/lib/ch/stateIdentity';
 import stateNamesHiRaw from '@/data/state-names-hi.json';
 const stateNamesHi = stateNamesHiRaw as Record<string, string>;
 import ministryNamesHiRaw from '@/data/ministry-names-hi.json';
@@ -220,40 +221,52 @@ function ReportCard({ report, cagHiMap }: { report: CagReport; cagHiMap: Record<
   const sev = SEVERITY_STYLE[report.severity];
   const hi = isHi ? (cagHiMap[report.id] ?? {}) : {};
 
+  const identity = hashedCardIdentity(report.id, familyFromCagWing(report.category, report.ministry));
+  const sevKind = report.severity === 'high' || report.severity === 'medium' || report.severity === 'low'
+    ? report.severity
+    : 'medium';
+
   return (
-    <div className="rounded-xl border border-border bg-card flex flex-col">
-      {/* Header */}
-      <div className="px-5 pt-4 pb-3">
-        {/* Badges row */}
-        <div className="flex flex-wrap gap-1.5 mb-3">
-          <Badge className={LEVEL_STYLE[report.level]}>{isHi ? (LEVEL_HI[report.level] ?? report.level) : report.level}</Badge>
-          <Badge className={CATEGORY_COLOR[report.category]}>{isHi ? (CATEGORY_HI[report.category] ?? report.category) : report.category}</Badge>
-          <span className={`flex items-center gap-1 text-xs font-medium ${sev.badge}`}>
-            <span className={`w-1.5 h-1.5 rounded-full ${sev.dot}`} />
-            {isHi ? (SEVERITY_HI[report.severity] ?? sev.label) : sev.label} {t('severitySuffix')}
-          </span>
+    <IdentityListingCard
+      identity={identity}
+      eyebrow={isHi ? (ministryNamesHi[report.ministry] ?? report.ministry) : report.ministry}
+      title={isHi && hi.titleHi ? hi.titleHi : report.title}
+      headline={String(report.year)}
+      headlineLabel={isHi ? translateReportNo(report.reportNo) : report.reportNo}
+      source="cag.gov.in"
+      asOf={report.datePresented || String(report.year)}
+      scope={isHi ? (stateNamesHi[report.state] ?? report.state) : report.state}
+      freshness="static"
+      freshnessDetail="Compiled CAG report record in this checkout — not a live feed."
+      chip={
+        <div className="flex flex-wrap gap-1.5">
+          <SeveritySignal kind={report.level === 'Central' ? 'central' : sevKind} label={isHi ? (LEVEL_HI[report.level] ?? report.level) : report.level} />
+          <SeveritySignal kind={sevKind} label={`${isHi ? (SEVERITY_HI[report.severity] ?? sev.label) : sev.label}`} />
         </div>
+      }
+      actions={
+        report.url ? (
+          <>
+            <a href={report.url} target="_blank" rel="noopener noreferrer" className="ch-btn-outline">
+              <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
+              {t('view')}
+            </a>
+            <a href={report.url} target="_blank" rel="noopener noreferrer" className="ch-btn-outline">
+              <Download className="h-3.5 w-3.5" aria-hidden="true" />
+              {t('download')}
+            </a>
+          </>
+        ) : (
+          <a href="https://cag.gov.in/en/audit-report" target="_blank" rel="noopener noreferrer" className="ch-btn-outline">
+            <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
+            {isHi ? 'CAG पर खोजें' : 'Browse CAG'}
+          </a>
+        )
+      }
+    >
 
-        {/* Report number + year */}
-        <div className="text-xs text-muted-foreground font-mono mb-1">
-          {isHi ? translateReportNo(report.reportNo) : report.reportNo} · {report.year}
-        </div>
-
-        {/* Title */}
-        <h3 className="font-semibold text-foreground text-sm leading-snug mb-2">
-          {isHi && hi.titleHi ? hi.titleHi : report.title}
-        </h3>
-
-        {/* Meta: state + ministry */}
-        <div className="flex flex-wrap gap-x-3 gap-y-0.5 text-xs text-muted-foreground">
-          <span className="font-medium text-foreground/80">{isHi ? (stateNamesHi[report.state] ?? report.state) : report.state}</span>
-          <span>{isHi ? (ministryNamesHi[report.ministry] ?? report.ministry) : report.ministry}</span>
-        </div>
-      </div>
-
-      {/* Overview */}
-      <div className="px-5 pb-3 flex-1">
-        <p className={`text-sm text-muted-foreground leading-relaxed ${expanded ? '' : 'line-clamp-3'}`}>
+      <div>
+        <p className={`text-sm leading-relaxed text-[var(--ch-text-secondary)] ${expanded ? '' : 'line-clamp-3'}`}>
           {isHi && hi.overviewHi ? hi.overviewHi : report.overview}
         </p>
 
@@ -309,59 +322,21 @@ function ReportCard({ report, cagHiMap }: { report: CagReport; cagHiMap: Record<
 
         {report.overview.length > 280 && (
           <button
-            onClick={() => setExpanded(v => !v)}
-            className="mt-3 text-xs text-primary hover:underline flex items-center gap-0.5"
+            type="button"
+            onClick={() => setExpanded((v) => !v)}
+            className="ch-btn-outline mt-3 min-h-11 text-xs"
           >
             {expanded
-              ? <><ChevronUp className="w-3 h-3" />{t('showLess')}</>
-              : <><ChevronDown className="w-3 h-3" />{t('readFullFindings')}</>}
+              ? <><ChevronUp className="h-3 w-3" />{t('showLess')}</>
+              : <><ChevronDown className="h-3 w-3" />{t('readFullFindings')}</>}
           </button>
         )}
-      </div>
-
-      {/* Footer: filename + actions */}
-      <div className="px-5 py-3 border-t border-border flex items-center justify-between gap-3 bg-muted/30 rounded-b-xl">
-        <span className="text-xs text-muted-foreground font-mono truncate flex items-center gap-1.5">
-          <FileText className="w-3.5 h-3.5 flex-shrink-0" />
+        <p className="mt-3 flex items-center gap-1.5 font-mono text-[11px] text-[var(--ch-text-muted)]">
+          <FileText className="h-3.5 w-3.5" aria-hidden="true" />
           {report.fileName ?? (isHi ? 'PDF उपलब्ध नहीं' : 'PDF not yet linked')}
-        </span>
-        <div className="flex items-center gap-2 flex-shrink-0">
-          {report.url ? (
-            <>
-              <a
-                href={report.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-md border border-border bg-background hover:bg-muted transition-colors font-medium"
-              >
-                <ExternalLink className="w-3.5 h-3.5" />
-                {t('view')}
-              </a>
-              <a
-                href={report.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-md bg-primary text-primary-foreground hover:bg-primary/90 transition-colors font-medium"
-              >
-                <Download className="w-3.5 h-3.5" />
-                {t('download')}
-              </a>
-            </>
-          ) : (
-            <a
-              href="https://cag.gov.in/en/audit-report"
-              target="_blank"
-              rel="noopener noreferrer"
-              title={isHi ? 'PDF अभी CAG वेबसाइट पर उपलब्ध नहीं है — सभी रिपोर्टें देखने के लिए क्लिक करें' : 'PDF not yet on CAG website — click to browse all CAG reports'}
-              className="flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-md border border-border bg-background hover:bg-muted transition-colors font-medium text-muted-foreground"
-            >
-              <ExternalLink className="w-3.5 h-3.5" />
-              {isHi ? 'CAG पर खोजें' : 'Browse CAG'}
-            </a>
-          )}
-        </div>
+        </p>
       </div>
-    </div>
+    </IdentityListingCard>
   );
 }
 
@@ -474,20 +449,19 @@ export default function Reports() {
   const clearAll = () => { setLevel(''); setState(''); setCategory(''); setYear(''); setSeverity(''); setSearch(''); setPage(1); };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="ch-listing">
       <SEO
         title={isHi ? "CAG लेखापरीक्षा रिपोर्ट डेटाबेस — 1,800+ रिपोर्टें" : "CAG Audit Reports Database — 1,800+ Reports"}
         description={isHi ? "केंद्र सरकार की योजनाओं और मंत्रालयों पर 1,800+ CAG लेखापरीक्षा रिपोर्टें। राज्य, वर्ष, श्रेणी और गंभीरता के अनुसार फ़िल्टर करें।" : "1,800+ CAG audit reports on Union Government schemes and ministries. Filter by state, year, category, and severity."}
         path="/reports"
         ogImage="/og/reports.jpg"
       />
-      <Navbar />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Page header */}
         <div className="mb-6">
-          <h1 className="text-3xl font-bold text-foreground mb-1">{t('cagPageTitle')}</h1>
-          <p className="text-muted-foreground max-w-2xl">
+          <h1 className="ch-listing__title mb-1 text-3xl font-bold">{t('cagPageTitle')}</h1>
+          <p className="ch-listing__lede max-w-2xl">
             {t('descriptionIntro')}
             {' '}<span className="font-medium text-foreground">{TOTAL_REPORTS.toLocaleString()}</span>{' '}{t('descriptionOutro')}
           </p>
@@ -501,7 +475,7 @@ export default function Reports() {
               value={search}
               onChange={e => setSearch(e.target.value)}
               placeholder={t('searchReportsPlaceholder')}
-              className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary/30"
+              className="ch-control w-full py-2.5 pl-10 pr-4 text-sm"
             />
             {search && (
               <button onClick={() => setSearch('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground">

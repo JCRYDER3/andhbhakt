@@ -18,7 +18,6 @@ import ministriesHiRaw from '@/data/ministries-hi.json';
 const ministriesHi = ministriesHiRaw as Record<string, string>;
 import sdHiRaw from '@/data/scheme-detail-hi.json';
 const cagAuditHi = (sdHiRaw as { cagMap?: Record<string, { findingHi?: string; claimedHi?: string; actualHi?: string }> }).cagMap ?? {};
-import { Navbar } from '@/components/navbar';
 
 // ── Month-name translator for Hindi date strings (e.g. "May 2014" → "मई 2014") ──
 const MONTHS_HI: Record<string, string> = {
@@ -1192,6 +1191,10 @@ function MemberAvatar({ name, wikiTitle, size = 'md' }: { name: string; wikiTitl
       <img
         src={photoUrl}
         alt={name}
+        width={80}
+        height={80}
+        loading="lazy"
+        decoding="async"
         className={`${dim} rounded-full flex-shrink-0 object-cover object-top border-2 border-border bg-muted`}
         onError={e => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
       />
@@ -1852,8 +1855,13 @@ function SchemesSection() {
   const [catFilter, setCatFilter] = useState<string>('all');
   const [sevFilter, setSevFilter] = useState<string>('all');
 
-  const { data: schemes = [], isLoading } = useListSchemes({});
-  const { data: categories = [] }         = useListCategories();
+  const apiOff = typeof sessionStorage !== 'undefined' && sessionStorage.getItem('govlens-api-down') === '1';
+  const { data: schemesData, isLoading } = useListSchemes({}, { query: { enabled: !apiOff, retry: 0 } });
+  const { data: categoriesData }         = useListCategories({ query: { enabled: !apiOff, retry: 0 } });
+  // Without the API, Vite serves index.html for /api/* (HTTP 200 text).
+  // Default `= []` only applies when data is undefined, not when it is a string.
+  const schemes    = Array.isArray(schemesData)    ? schemesData    : [];
+  const categories = Array.isArray(categoriesData) ? categoriesData : [];
 
   const filtered = useMemo(() => {
     return schemes.filter(s => {
@@ -1979,12 +1987,14 @@ function CagSection() {
 
   const { data: rawAudits = [], isLoading: loading } = useQuery<LiveCagAudit[]>({
     queryKey: ['cag-audits-recent'],
-    queryFn: () => fetch('/api/cag-audits?yearFrom=2025').then(r => {
+    queryFn: () => fetch('/api/cag-audits?yearFrom=2025').then(async r => {
       if (!r.ok) throw new Error(`HTTP ${r.status}`);
-      return r.json();
+      const data = await r.json();
+      return Array.isArray(data) ? data : [];
     }),
+    enabled: typeof sessionStorage === 'undefined' || sessionStorage.getItem('govlens-api-down') !== '1',
     staleTime: 5 * 60 * 1000,
-    retry: 3,
+    retry: 0,
   });
 
   const audits = useMemo(() => {
@@ -4249,7 +4259,6 @@ export default function CentralData() {
         ogImage="/og/default.jpg"
         jsonLd={websiteJsonLd}
       />
-      <Navbar />
       <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
         {/* Header */}

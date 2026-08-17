@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { Link, useParams } from 'wouter';
 import { useTranslation } from 'react-i18next';
 import { SEO, ministerJsonLd } from '@/components/seo';
-import { Navbar } from '@/components/navbar';
 import {
   ArrowLeft, ExternalLink, AlertTriangle, GraduationCap,
   ShieldCheck, ShieldAlert, Calendar, Building2, Users,
@@ -141,7 +140,6 @@ function NotFound() {
   const { t } = useTranslation();
   return (
     <div className="min-h-screen bg-background">
-      <Navbar />
       <div className="max-w-2xl mx-auto px-4 py-20 text-center">
         <Users className="w-12 h-12 mx-auto mb-4 text-muted-foreground/30" />
         <h1 className="text-xl font-semibold text-foreground mb-2">{t('notFoundHeading')}</h1>
@@ -219,7 +217,6 @@ export default function MinisterProfilePage() {
         type="article"
         jsonLd={ministerJsonLd(minister.name, minister.title, params.slug ?? '')}
       />
-      <Navbar />
 
       <div className="max-w-3xl mx-auto px-4 sm:px-6 py-6">
 
@@ -243,6 +240,10 @@ export default function MinisterProfilePage() {
                   <img
                     src={photoUrl}
                     alt={minister.name}
+                    width={96}
+                    height={96}
+                    loading="lazy"
+                    decoding="async"
                     className="w-20 h-20 sm:w-24 sm:h-24 rounded-xl object-cover object-top border border-border shadow-sm"
                   />
                 ) : (

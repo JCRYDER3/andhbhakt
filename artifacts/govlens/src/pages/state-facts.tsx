@@ -127,7 +127,6 @@ const sfHiGroups: Record<string, string> = {
 const hiOr = (isHi: boolean, hi: string | undefined | null, en: string): string =>
   isHi ? (hi || sfHiHeadlines[en] || en) : en;
 import { Link } from 'wouter';
-import { Navbar } from '@/components/navbar';
 import {
   BookOpen,
   ChevronDown,
@@ -253,6 +252,10 @@ function Avatar({
       <img
         src={photoUrl}
         alt={name}
+        width={56}
+        height={56}
+        loading="lazy"
+        decoding="async"
         onError={() => setFailed(true)}
         className={`${dim} rounded-full object-cover object-top flex-shrink-0 border-2 border-border bg-muted`}
       />
@@ -1336,7 +1339,6 @@ export default function StateFacts() {
         path="/state-facts"
         ogImage="/og/state-facts.jpg"
       />
-      <Navbar />
       <div className="max-w-2xl mx-auto px-4 py-10">
 
         {/* Header */}

@@ -1,5 +1,4 @@
 import { useTranslation } from 'react-i18next';
-import { Navbar } from '@/components/navbar';
 import { useState } from 'react';
 import { SEO } from '@/components/seo';
 import { TrendingUp, TrendingDown, Minus, ExternalLink, AlertCircle } from 'lucide-react';
@@ -746,7 +745,6 @@ export default function DevelopmentIndex() {
         path="/development-index"
         ogImage="/og/development-index.jpg"
       />
-      <Navbar />
 
       {/* Header */}
       <div className="border-b border-border bg-card/50">

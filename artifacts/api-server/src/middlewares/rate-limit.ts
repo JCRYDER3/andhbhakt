@@ -68,7 +68,7 @@ export function cloudflareOnlyMiddleware(
   if (process.env.NODE_ENV !== "production") { next(); return; }
 
   // Health checks come from Replit's infra without CF headers — allow them
-  if (req.path === "/api/healthz") { next(); return; }
+  if (req.path === "/api/healthz" || req.path === "/api/health") { next(); return; }
 
   // Replit's deployment proxy forwards external traffic to us on localhost:8080.
   // It strips custom X- headers, so requests that entered via Cloudflare arrive

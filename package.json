@@ -6,7 +6,11 @@
     "preinstall": "sh -c 'case \"$npm_config_user_agent\" in pnpm/*) ;; *) echo \"Error: use pnpm to install dependencies — see https://pnpm.io\" >&2; exit 1 ;; esac'",
     "build": "pnpm run typecheck && pnpm -r --if-present run build",
     "typecheck:libs": "tsc --build",
-    "typecheck": "pnpm run typecheck:libs && pnpm -r --filter \"./artifacts/**\" --filter \"./scripts\" --if-present run typecheck"
+    "typecheck": "pnpm run typecheck:libs && pnpm -r --filter \"./artifacts/**\" --filter \"./scripts\" --if-present run typecheck",
+    "dev": "pnpm --filter @workspace/govlens run dev",
+    "dev:mock": "pnpm --filter @workspace/govlens run dev:mock",
+    "dev:api:win": "node scripts/dev-api-win.mjs",
+    "test:e2e": "node tests/playwright/run-smoke.mjs"
   },
   "private": true,
   "dependencies": {

@@ -1493,9 +1493,21 @@ function PMCabinetSection() {
   const isHi = i18n.language === 'hi';
   const [cabinetOpen, setCabinetOpen] = useState(false);
   const [methodologyOpen, setMethodologyOpen] = useState(false);
-  const cabinetMinisters = CABINET.filter(m => m.title === 'Cabinet Minister');
-  const mosIC = CABINET.filter(m => m.title === 'MoS (Independent Charge)');
-  const mos = CABINET.filter(m => m.title === 'Minister of State');
+  const [filterState, setFilterState] = useState<string>('all');
+
+  const applyFilter = (members: typeof CABINET) => {
+    switch (filterState) {
+      case 'criminal': return members.filter(m => m.criminalCases > 0);
+      case 'clean': return members.filter(m => m.criminalCases === 0);
+      case 'education_high': return members.filter(m => m.educationScore >= 70);
+      case 'education_low': return members.filter(m => m.educationScore < 70);
+      default: return members;
+    }
+  };
+
+  const cabinetMinisters = applyFilter(CABINET.filter(m => m.title === 'Cabinet Minister'));
+  const mosIC = applyFilter(CABINET.filter(m => m.title === 'MoS (Independent Charge)'));
+  const mos = applyFilter(CABINET.filter(m => m.title === 'Minister of State'));
 
   return (
     <div className="px-6 py-5 border-b border-border">
@@ -1560,11 +1572,31 @@ function PMCabinetSection() {
               <p className="text-[10px] text-amber-700/60 dark:text-amber-400/60 mt-0.5">{isHi ? 'ADR / नेशनल इलेक्शन वॉच — 11 जून 2024 को मंत्रिपरिषद के 72 में से 71 मंत्रियों का विश्लेषण।' : CABINET_SUMMARY.source}</p>
             </div>
 
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-4">
+              <div className="flex items-center gap-2">
+                <ListFilter className="w-4 h-4 text-muted-foreground" />
+                <span className="text-sm font-medium text-muted-foreground">{isHi ? 'मंत्रियों को फ़िल्टर करें' : 'Filter Ministers'}</span>
+              </div>
+              <Select value={filterState} onValueChange={setFilterState}>
+                <SelectTrigger className="w-full sm:w-[220px]">
+                  <SelectValue placeholder="All Ministers" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">{isHi ? 'सभी मंत्री' : 'All Ministers'}</SelectItem>
+                  <SelectItem value="criminal">{isHi ? 'आपराधिक मामलों वाले' : 'With Criminal Cases'}</SelectItem>
+                  <SelectItem value="clean">{isHi ? 'स्वच्छ रिकॉर्ड (0 मामले)' : 'Clean Record (0 Cases)'}</SelectItem>
+                  <SelectItem value="education_high">{isHi ? 'उच्च शिक्षा (स्नातक+)' : 'Higher Education (Graduates+)'}</SelectItem>
+                  <SelectItem value="education_low">{isHi ? 'अन्य शिक्षा स्तर' : 'Other Education Levels'}</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
             {[
               { label: `${t('cabinetMinisters')} (${cabinetMinisters.length})`, members: cabinetMinisters },
               { label: `${t('ministersOfStateIndependentCharge')} (${mosIC.length})`, members: mosIC },
               { label: `${t('ministersOfStateAttached')} (${mos.length})`, members: mos },
             ].map(group => (
+              group.members.length > 0 && (
               <div key={group.label} className="mb-4">
                 <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-2 px-1">{group.label}</p>
                 <div className="divide-y divide-border border border-border rounded-xl overflow-hidden">
@@ -1624,6 +1656,7 @@ function PMCabinetSection() {
                   })}
                 </div>
               </div>
+              )
             ))}
           </div>
         )}
@@ -1852,8 +1885,11 @@ function SchemesSection() {
   const [catFilter, setCatFilter] = useState<string>('all');
   const [sevFilter, setSevFilter] = useState<string>('all');
 
-  const { data: schemes = [], isLoading } = useListSchemes({});
-  const { data: categories = [] }         = useListCategories();
+  const { data: schemesData, isLoading } = useListSchemes({});
+  const schemes = Array.isArray(schemesData) ? schemesData : schemesData?.schemes ?? [];
+
+  const { data: categoriesData } = useListCategories();
+  const categories = Array.isArray(categoriesData) ? categoriesData : categoriesData?.categories ?? [];
 
   const filtered = useMemo(() => {
     return schemes.filter(s => {

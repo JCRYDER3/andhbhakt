@@ -1,6 +1,6 @@
 import { Link, useLocation } from 'wouter';
 import { cn } from '@/lib/utils';
-import { Search, BarChart3, Menu, X, FileText, BookOpen, Flag, IndianRupee, Globe, Github } from 'lucide-react';
+import { Search, BarChart3, Menu, X, FileText, BookOpen, Flag, IndianRupee, Globe, Github, MessageSquare } from 'lucide-react';
 import { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -17,6 +17,7 @@ export function Navbar() {
     { href: '/reports', label: t('navCagReports'), icon: FileText },
     { href: '/funding', label: t('navPartyFunding'), icon: IndianRupee, badge: t('navBeta') },
     { href: '/development-index', label: t('navDevelopmentIndex'), icon: BarChart3 },
+    { href: '/report-issue', label: i18n.language === 'hi' ? 'प्रतिक्रिया' : 'Feedback', icon: MessageSquare },
   ];
 
   // Close on outside click

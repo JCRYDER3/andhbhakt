@@ -19,12 +19,17 @@ export default function Schemes() {
   const [ministry, setMinistry] = useState<string | undefined>();
   const [severity, setSeverity] = useState<string | undefined>();
 
-  const { data: schemes, isLoading } = useListSchemes(
+  const { data: schemesData, isLoading } = useListSchemes(
     { search, categoryId, ministry, severity },
     { query: { queryKey: getListSchemesQueryKey({ search, categoryId, ministry, severity }) } }
   );
-  const { data: categories } = useListCategories();
-  const { data: ministries } = useListMinistries();
+  const schemes = Array.isArray(schemesData) ? schemesData : schemesData?.schemes ?? [];
+
+  const { data: categoriesData } = useListCategories();
+  const categories = Array.isArray(categoriesData) ? categoriesData : categoriesData?.categories ?? [];
+
+  const { data: ministriesData } = useListMinistries();
+  const ministries = Array.isArray(ministriesData) ? ministriesData : ministriesData?.ministries ?? [];
 
   return (
     <div className="min-h-[100dvh] bg-background">

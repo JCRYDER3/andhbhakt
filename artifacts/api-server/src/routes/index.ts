@@ -10,6 +10,9 @@ import sessionRouter from "./session";
 import reportIssueRouter from "./report_issue";
 import adminIssuesRouter from "./admin_issues";
 import newsRouter from "./news";
+import representativesRouter from "./representatives";
+import reviewQueueRouter from "./review_queue";
+import officialResponsesRouter from "./official_responses";
 
 const router: IRouter = Router();
 
@@ -24,5 +27,12 @@ router.use(refreshRouter);
 router.use(reportIssueRouter);
 router.use(adminIssuesRouter);
 router.use(newsRouter);
+
+// Ported from jan-score (docs/jan-score-ideas.md) — representative-level
+// civic accountability, as its own domain alongside this repo's existing
+// scheme/state tracking.
+router.use(representativesRouter);
+router.use(reviewQueueRouter);
+router.use(officialResponsesRouter);
 
 export default router;

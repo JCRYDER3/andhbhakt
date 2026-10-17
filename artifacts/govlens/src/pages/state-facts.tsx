@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { computeIntegrityScore } from '@/lib/scoring';
 import { SEO } from '@/components/seo';
+import { BIHAR_TECHNICAL_EDUCATION_PATH } from '@/data/bihar-technical-education';
 import officialTitlesHiRaw from '../data/official-titles-hi.json';
 const officialTitlesHi = officialTitlesHiRaw as Record<string, string>;
 import statLabelsHiRaw from '../data/stat-labels-hi.json';
@@ -1182,6 +1183,13 @@ function StateFactCard({ fact }: { fact: StateFact }) {
           {fact.stateCode}
         </span>
       </div>
+
+      {fact.name === 'Bihar' && (
+        <Link href={BIHAR_TECHNICAL_EDUCATION_PATH} className="flex items-center justify-between gap-3 border-b border-border bg-primary/5 px-6 py-4 text-sm font-semibold hover:bg-primary/10">
+          <span>{isHi ? 'तकनीकी शिक्षा — विभागीय प्रमाण और सत्यापन स्थिति' : 'Technical education — department evidence and verification status'}</span>
+          <ChevronRight className="h-4 w-4 shrink-0" />
+        </Link>
+      )}
 
       {/* ── Chief Minister ── */}
       <div className="px-6 py-5 border-b border-border">

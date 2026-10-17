@@ -9,6 +9,7 @@ import { useTranslation } from 'react-i18next';
 
 const CentralData      = lazy(() => import('@/pages/central-data'));
 const StateFacts       = lazy(() => import('@/pages/state-facts'));
+const BiharTechnicalEducation = lazy(() => import('@/pages/bihar-technical-education'));
 const Rankings         = lazy(() => import('@/pages/rankings'));
 const Reports          = lazy(() => import('@/pages/reports'));
 const Schemes          = lazy(() => import('@/pages/schemes'));
@@ -40,6 +41,7 @@ function Router() {
         <Route path="/schemes/:slug" component={SchemeDetail} />
         <Route path="/development-index" component={DevelopmentIndex} />
         <Route path="/reports" component={Reports} />
+        <Route path="/state-facts/bihar/technical-education" component={BiharTechnicalEducation} />
         <Route path="/state-facts" component={StateFacts} />
         <Route path="/rankings" component={Rankings} />
         <Route path="/central-data" component={CentralData} />
